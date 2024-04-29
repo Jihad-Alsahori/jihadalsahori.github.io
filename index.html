@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<div class="container">
+  <h1>Open Library Book Search</h1>
+ <hr>
+ 
+<img src="book1.jpg"
+ </div>
+ <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+ 
+
+   <style>
+    body {    font-family: "Times New Roman"; 
+    background-color: lightblue;  
+    display: flex; 
+    align-items: center; 
+     height: 70vh;}
+    
+    .container { 
+     padding: 66px; 
+    background-color: pink; 
+    border-radius: 66px;} 
+  </style>
+</head>
+<body>
+
+    
+    <input  id="searchInput"  class="form-control mb-3"placeholder="Search your book here :)"> 
+     <button id="search"class="btn btn-primary">Search</button>  
+	<button class="btn-secondary">Go To Main Page</button>
+    <div id="findResult">
+    
+     <hr>
+  </div>
+
+ <script>
+    document.getElementById('search').addEventListener('click', Library);
+
+
+    function Library() {
+      fetch(`https://openlibrary.org/search.json?title=${document.getElementById('searchInput').value}`)
+        .then(response => response.json())
+        .then(data => displayResults(data.docs, true));
+    }
+     function displayResults(books, Details) {
+  let show = '';
+  books.forEach(book => {
+    show += `
+      <div>
+       <h3>${book.title}</h3>
+      <p>Author: ${book.author_name}</p>
+ <p>The Publish Year: ${book.first_publish_year}</p>
+        
+        ${Details ? `<a href="https://openlibrary.org${book.key}">Push for more details</a>` : ''}
+           <hr>
+        ${book.author_key ? `<img src="https://covers.openlibrary.org/a/olid/${book.author_key[0]}-S.jpg">` : ''}  
+    `;
+  });
+  
+  findResult.innerHTML = show;
+}
+
+ </script>
+</body>
+</html>
